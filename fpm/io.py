@@ -138,6 +138,82 @@ def load_exr_green(
     # ownership, then move it to the requested device.
     return torch.from_numpy(img.copy()).to(device, non_blocking=True)
 
+def subtract_black_level(
+    img: torch.Tensor,
+    camera: str | None = None,
+    black_level: float | None = None,
+    clip_negative: bool = True,
+) -> torch.Tensor:
+    """
+    Subtract the camera black level from an image.
+
+    This function removes a constant black-level offset from an image tensor.
+    If `black_level` is not provided, the function can choose a default value
+    based on the camera name. For example, passing `camera="orcaflash"`
+    uses a black level of 100.
+
+    Parameters
+    ----------
+    img : torch.Tensor
+        Input image tensor. The image can be 2D or higher-dimensional.
+        The subtraction is applied element-wise.
+    camera : str or None, optional
+        Name of the camera used to acquire the image. If set to `"orcaflash"`
+        and `black_level` is not provided, the default black level is set to 100.
+        The camera name comparison is case-insensitive.
+    black_level : float or None, optional
+        Black-level value to subtract from the image. If provided, this value
+        overrides any camera-specific default.
+    clip_negative : bool, optional
+        If True, negative values after black-level subtraction are clipped to 0.
+        This is usually recommended for image intensity data.
+
+    Returns
+    -------
+    torch.Tensor
+        Image after black-level subtraction.
+
+    Raises
+    ------
+    ValueError
+        If neither `black_level` nor a supported `camera` name is provided.
+    TypeError
+        If `img` is not a torch.Tensor.
+    """
+    if not isinstance(img, torch.Tensor):
+        raise TypeError(f"`img` must be a torch.Tensor, but got {type(img).__name__}.")
+
+    if black_level is None:
+        if camera is None:
+            raise ValueError(
+                "Please provide either `black_level` or a supported `camera` name."
+            )
+
+        camera_key = camera.strip().lower()
+
+        if camera_key == "orcaflash":
+            black_level = 100.0
+        else:
+            raise ValueError(
+                f"Unsupported camera '{camera}'. "
+                "Currently supported cameras: 'orcaflash'."
+            )
+
+    # Convert black level to the same dtype and device as the input image.
+    black_level_tensor = torch.tensor(
+        black_level,
+        dtype=img.dtype,
+        device=img.device,
+    )
+
+    # Subtract the black-level offset from every pixel.
+    corrected_img = img - black_level_tensor
+
+    # Intensity values should usually remain non-negative after correction.
+    if clip_negative:
+        corrected_img = torch.clamp(corrected_img, min=0)
+
+    return corrected_img
 
 def load_crop_dir_stack(
     dataset_cfg: DatasetConfig,
@@ -180,6 +256,10 @@ def load_crop_dir_stack(
         full_path = crop_path / filename
 
         img = load_exr_green(full_path, device="cpu")
+
+        # Remove black level from the image before stacking
+        img = subtract_black_level(img, camera=dataset_cfg.camera_name)
+
         imgs.append(img)
 
         bk1 = 0.0
@@ -290,6 +370,10 @@ def load_crop_stack_from_full_frames(
         full_path = full_root / filename
 
         full_img = load_exr_green(full_path, device="cpu")
+
+        # Remove black level from the image before stacking
+        full_img = subtract_black_level(full_img, camera=dataset_cfg.camera_name)
+
         crop_img = crop_tensor(full_img, origin_rc=origin_rc, crop_size=crop_size)
         imgs.append(crop_img)
 

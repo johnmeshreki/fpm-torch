@@ -72,6 +72,7 @@ def run_experiment(
     nimg = coords.shape[0]
 
     FPMLoggerObject.log.info("Sample: %s", cfg.dataset.sample_name)
+    FPMLoggerObject.log.info("Camera: %s", cfg.dataset.camera_name)
     FPMLoggerObject.log.info("Number of images from coords: %s", nimg)
     FPMLoggerObject.log.info("Input root: %s", cfg.dataset.input_root)
     active_crop_dir = crop_desc["crop_dir"]

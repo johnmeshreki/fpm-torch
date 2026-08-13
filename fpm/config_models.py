@@ -47,6 +47,8 @@ class DatasetConfig(BaseModel):
     ----------
     sample_name:
         Human-readable sample name.
+    camera_name:
+        Camera name or identifier string.    
     input_root:
         Root directory containing pre-cropped crop folders.
         This is used when ``input_mode="load_cropped_dirs"``.
@@ -79,10 +81,11 @@ class DatasetConfig(BaseModel):
     """
 
     sample_name: str
+    camera_name: str
     input_root: str
     file_pattern: str
     coords_file: str
-    nused: int = 150
+    nused: int = 140
     save_root: str = "output"
     input_mode: Literal["load_cropped_dirs", "load_full_frames"] = "load_cropped_dirs"
     full_frame_input_root: str | None = None
