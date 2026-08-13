@@ -1,0 +1,10 @@
+name: env-fpm-torch-py311
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - openexr-python
+  - matplotlib
+  - contourpy
+  - imageio
+prefix: /home/ads/jm095624/anaconda3/envs/env-fpm-torch-py311
