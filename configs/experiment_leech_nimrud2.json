@@ -1,0 +1,53 @@
+{
+  "dataset": {
+    "sample_name": "Leech",
+    "camera_name": "canon",
+    "input_mode": "load_cropped_dirs",
+    "input_root": "PATH/TO/HDR/output/2025_05_09/2025_05_09_12_30_34/crop_1_1_5634_3753/30PercentOverlap/",
+    "file_pattern": "2024_04_24_12_39_33_img_x_{x}_y_{y}_AHD.exr",
+    "coords_file": "configs/coords_leech.json",
+    "save_root": "PATH/TO/Results/CV_CSE/fpm_reconstruction/fpm_torch_meshreki",
+    "nused": 293
+  },
+  "crops": {
+    "mode": "load",
+    "selection": "list",
+    "crop_dirs": ["crop_82", "crop_83"],
+    "full_image_shape": [3753, 5634],
+    "crop_size": [512, 512],
+    "overlap": 0.30,
+    "max_crops": 150,
+    "indexing": "row_major"
+  },
+  "setup": {
+    "wavelength_um": 0.519,
+    "objective_na": 0.3,
+    "magnification": 10.2,
+    "camera_pixel_um": 6.4,
+    "patch_size": [512, 512],
+    "image_center": [256, 256],
+    "led_distance_um": 66500.0,
+    "led_coord_unit_um": 4000.0,
+    "led_coord_center": [15, 15],
+    "led_coords_convention": "xy",
+    "led_axis_signs": [-1, -1],
+  "z0": 0.0
+  },
+  "reconstruction": {
+    "tol": 0.01,
+    "max_iter": 10,
+    "min_iter": 1,
+    "monotone": true,
+    "step_size": 0.01,
+    "op_alpha": 1.0,
+    "op_beta": 1000.0,
+    "display": "full",
+    "mode": "fourier",
+    "use_default_p0": true,
+    "optimize_p_flags": [true],
+    "pupil_scaling_factors": [1.0],
+    "save_iter_result": 1,
+    "poscalibrate": 0,
+    "calibrate_tol": 0.1
+  }
+}
