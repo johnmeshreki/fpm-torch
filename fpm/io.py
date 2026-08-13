@@ -193,6 +193,8 @@ def subtract_black_level(
 
         if camera_key == "orcaflash":
             black_level = 100.0
+        elif camera_key == "canon": #CAVEAT: Dataset used for the Canon camera are already processed (black-level corrected), so we set the black level to 0.
+            black_level = 0.0
         else:
             raise ValueError(
                 f"Unsupported camera '{camera}'. "
