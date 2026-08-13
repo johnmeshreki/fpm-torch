@@ -1,0 +1,49 @@
+{
+  "dataset": {
+    "sample_name": "Resolution Target",
+    "camera_name": "orcaflash",
+    "input_mode": "load_full_frames",
+    "input_root": "/PATH/TO/fpm_capture/output/2026_04_20/2026_04_20_10_28_55/row_0_col_0",
+    "file_pattern": "image_x_{x}.0_y_{y}.0_gain_NA_exptime_5e+00_r_0_g_1_b_0_sx_31000_sy_-49000_row_0_col_0.exr",
+    "coords_file": "/PATH/TO/fpm-torch/configs/led_coords_resTar_nimrud3.json",
+    "save_root": "PATH/TO/fpm_reconstruction/fpm_torch_meshreki"
+  },
+  "crops": {
+    "mode": "generate",
+    "selection": "single",
+    "full_image_shape": [2048, 2048],
+    "crop_origin_rc": [1500, 953],
+    "crop_size": [512, 512]
+  },
+  "setup": {
+  "wavelength_um": 0.519,
+  "objective_na": 0.3,
+  "magnification": 10.2,
+  "camera_pixel_um": 6.3,
+  "patch_size": [256, 256],
+  "image_center": [128, 128],
+  "led_distance_um": 50000.0,
+  "led_coord_unit_um": 63.0,
+  "led_coord_center": [960.0, 540.0],
+  "led_coords_convention": "xy",
+  "led_axis_signs": [-1, -1],
+  "z0": 0.0
+  },
+  "reconstruction": {
+    "tol": 0.01,
+    "max_iter": 50,
+    "min_iter": 1,
+    "monotone": false,
+    "step_size": 0.01,
+    "op_alpha": 1,
+    "op_beta": 100000,
+    "display": "full",
+    "mode": "fourier",
+    "use_default_p0": true,
+    "optimize_p_flags": [true],
+    "pupil_scaling_factors": [1.0],
+    "save_iter_result": 1,
+    "poscalibrate": 0,
+    "calibrate_tol": 0.1
+  }
+}
