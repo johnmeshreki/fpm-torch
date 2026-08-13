@@ -7,4 +7,4 @@ dependencies:
   - matplotlib
   - contourpy
   - imageio
-prefix: /home/ads/jm095624/anaconda3/envs/env-fpm-torch-py311
+prefix: /anaconda3/envs/env-fpm-torch-py311
